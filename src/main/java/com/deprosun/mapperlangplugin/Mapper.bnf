@@ -1,0 +1,114 @@
+{
+    // Name and the location of the parser which will be generated.
+    parserClass="com.deprosun.mapperlangplugin.parser.MapperParser"
+
+    // All nodes will extend this class. This wraps AST node to a PSI node.
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    // Prefix for all generated classes.
+    psiClassPrefix=""
+    // Suffix for implementation classes.
+    psiImplClassSuffix="Impl"
+
+    // Location to be used when generating PSI classes.
+    psiPackage="com.deprosun.mapperlangplugin.psi"
+    // Location to be used when generating PSI implementation classes.
+    psiImplPackage="com.deprosun.mapperlangplugin.psi.impl"
+
+    // Element type holder class name. This class will be used extensively throughout the tutorial.
+    elementTypeHolderClass="com.deprosun.mapperlangplugin.psi.SimpleTypes"
+
+    // Class which will be used to create internal nodes.
+    elementTypeClass="com.deprosun.mapperlangplugin.psi.MapperElementType"
+    // Class which will be used to create leaf nodes.
+    tokenTypeClass="com.deprosun.mapperlangplugin.psi.MapperTokenType"
+
+    tokens = [
+          EQ='='
+          LP='('
+          RP=')'
+          DOT='.'
+          TILDE='`'
+
+          spaces='regexp:\s+'
+          number='regexp:\d+(\.\d*)?'
+          comment='regexp://.*'
+          id='regexp:\p{Alpha}\w*'
+//          id='regexp:([a-zA-Z]+(\.[a-zA-Z]+)?)+'
+
+    ]
+}
+
+// root ::= root_item *
+// private root_item ::= !<<eof>> Mapper {pin=1 recoverWhile=rule_recover}
+// private rule_recover ::= !(TOPIC)
+//
+// the !<<eof>> with error recovery clause [{pin=1 recoverWhile=rule_recover}] enables the PSI parser Live Preview to
+// not report errors when the file is empty. In other words, it is okay to have not mapper configuration.
+//
+// to play with this you can:
+//  - remove the star (*) from root, and
+//  - remove !<<eof>> part
+// the result will be that the PSI Live Preview will say error on empty file.
+// clause ({pin=1 recoverWhile=rule_recover}) in (root_item ::= !<<eof>> Mapper)
+// "pins" the first expression here which is !<<eof>>. Pin=1 means that the parser
+// will consider the matching successful of Mapper rule if !<<eof>> is met.
+// !<<eof>> means NOT end of file character.
+
+root ::= root_item *
+private root_item ::= !<<eof>> Mapper {pin=1 recoverWhile=rule_recover}
+private rule_recover ::= !(TOPIC)
+
+Mapper ::= TOPIC TopicName Options* '(' Mappings Mapper* ')'
+
+Options ::= FromClause | FilterClause | CachedValues
+
+Mappings ::= MAPPING '(' MappingClause+ ')'
+
+MappingClause ::= StraightMapping | ExplodeMapping | ObjectMapping | ListMapping
+
+ListMapping ::= LIST ColumnName FROM Path CachedValues? '(' MappingClause+ ')'
+
+ExplodeMapping ::= EXPLODE Path [CachedValues] '(' MappingClause+ ')'
+
+ObjectMapping ::= OBJECT ColumnName FromClause '(' MappingClause+ ')'
+
+FromClause ::= FROM Path
+
+StraightMapping ::= MappingAlias ColumnDataType Precision? NullOrNot Attribute*
+
+Attribute ::= ReferenceClause | PK | FK
+
+ReferenceClause ::= REFERENCE '(' TopicName (',' ID)? ')'
+
+NullOrNot ::= [NOT] NULL
+
+Precision ::=  '(' NUMBER (','? NUMBER)*')'
+
+MappingAlias ::= Path '=' ColumnName
+
+ColumnName ::= ID
+
+CachedValues ::= BROADCAST '(' AliasedPath (',' AliasedPath)* ')'
+
+AliasedPath ::= Path Alias?
+
+Alias ::= AS ID
+
+FilterClause ::= FILTER Path '=' Path
+
+//LiteralClause ::= ID | NUMBER
+
+//ValueClause ::= ID | NUMBER
+
+Path ::= MapFunc | SimplePath
+
+MapFunc ::= ['`'] ID ['`'] '(' Path? (',' Path)* ')'
+
+SimplePath ::= ['`'] ID ['`'] ('.' ['`'] ID ['`'])*
+
+ColumnDataType ::= STRING | INT | DECIMAL
+
+TopicName ::= [['`'] ID ['`'] '.'] ['`'] ID ['`']
+
+//Schema ::= ID

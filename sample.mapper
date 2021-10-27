@@ -1,0 +1,32 @@
+TOPIC name.sdf FROM some.asd FILTER `FROM`.sjd = topic(sjnd,dkhf,`FROM`) BROADCAST(mypath) BROADCAST(mypath) (
+    MAPPING(
+        myP = myP DECIMAL NOT NULL REFERENCE(MYTOPIC) PK
+        OBJECT my FROM some(
+            myP = myP DECIMAL NOT NULL REFERENCE(MYTOPIC) PK
+        )
+        LIST dfjh FROM TOPICV (
+            myP = myP DECIMAL NOT NULL REFERENCE(MYTOPIC) PK
+        )
+        EXPLODE kjdnfsd BROADCAST(`TOPIC` AS skd) (
+            sds = myP DECIMAL NOT NULL REFERENCE(MYTOPIC) PK
+            myP = myP DECIMAL NOT NULL REFERENCE(MYTOPIC) PK
+            myP = myP DECIMAL NOT NULL REFERENCE(MYTOPIC) PK
+            myP = myP DECIMAL NOT NULL REFERENCE(MYTOPIC) PK
+            myP = myP DECIMAL NOT NULL REFERENCE(MYTOPIC) PK
+        )
+    )
+    TOPIC myopic FROM some FILTER sdjf = hi BROADCAST(mypath) (
+         MAPPING(
+             myP = myP INT NOT NULL REFERENCE(MYTOPIC) PK
+             OBJECT my FROM some (
+                 myP = myP STRING NOT NULL REFERENCE(MYTOPIC) PK
+             )
+             LIST dfjh FROM sjhd (
+                 myP = myP DECIMAL NOT NULL REFERENCE(MYTOPIC) PK
+             )
+             EXPLODE kjdnfsd BROADCAST(mypath AS skd) (
+                 myP = myP DECIMAL NOT NULL REFERENCE(MYTOPIC) PK
+             )
+         )
+     )
+)

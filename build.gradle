@@ -1,0 +1,32 @@
+plugins {
+    id 'org.jetbrains.intellij' version '1.1.6'
+    id 'java'
+}
+
+group 'com.deprosun'
+version '0.1'
+sourceSets.main.java.srcDirs 'src/main/gen'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.antlr:antlr4-intellij-adaptor:0.1"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation group: 'com.github.vbmacher', name: 'java-cup-runtime', version: '11b-20160615'
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version = '2021.2.2'
+}
+patchPluginXml {
+    changeNotes = """
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>"""
+}
+test {
+    useJUnitPlatform()
+}
