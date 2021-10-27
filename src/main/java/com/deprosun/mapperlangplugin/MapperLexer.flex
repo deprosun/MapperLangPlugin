@@ -21,13 +21,15 @@ import com.intellij.lexer.FlexLexer;
 %function advance
 %type IElementType
 %unicode
+//these don't work yet idk why. I think CUP doesn't work with IntelliJ stuff
 //%column
 //%line
 //%cup
 
-%{
-    private String filterClause = "";
-%}
+//User code to add to the lexer class
+//%{
+//    private String filterClause = "";
+//%}
 
 EOL=\R
 WHITE_SPACE=\s+
